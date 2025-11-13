@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   ShieldCheck,
   Bell,
@@ -16,52 +17,80 @@ import {
   Settings,
   BarChart3,
   Radio,
-  Phone,
   MessageSquare,
   Star
 } from 'lucide-react'
 
-function Badge({ children }) {
-  return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-      <ShieldCheck className="h-3.5 w-3.5" />
-      {children}
-    </span>
-  )
-}
-
 const featureIconClass = 'h-5 w-5 text-blue-600'
 const cardClass =
-  'rounded-2xl bg-white shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow duration-300'
+  'rounded-2xl bg-white shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-all duration-300'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+}
+
+const fade = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.6 } }
+}
+
+const stagger = { show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }
+
+function Badge({ children }) {
+  return (
+    <motion.span
+      variants={fadeUp}
+      className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700"
+    >
+      <ShieldCheck className="h-3.5 w-3.5" />
+      {children}
+    </motion.span>
+  )
+}
 
 function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60rem_40rem_at_80%_-10%,#cfe8ff_0,transparent_45%),radial-gradient(60rem_40rem_at_-10%_10%,#e9f2ff_0,transparent_45%)]" />
       <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-16 sm:pt-28 lg:pt-32 lg:pb-24">
-        <div className="mx-auto max-w-3xl text-center">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={stagger}
+          className="mx-auto max-w-3xl text-center"
+        >
           <Badge>Trusted school ride safety</Badge>
-          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
+          <motion.h1 variants={fadeUp} className="mt-6 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
             Safer school rides. Happier mornings.
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
-            KiddyGo brings live tracking, instant alerts and simple route management for schools,
-            parents and van drivers—so every school run feels calm, on-time and safe.
-          </p>
-          <div className="mt-8 flex items-center justify-center gap-3">
-            <a href="#demo" className="rounded-full bg-blue-600 px-6 py-3 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          </motion.h1>
+          <motion.p variants={fadeUp} className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
+            KiddyGo gives schools and parents live tracking, instant alerts, and simple route management—so every school run feels calm, on time and safe.
+          </motion.p>
+          <motion.div variants={fadeUp} className="mt-8 flex items-center justify-center gap-3">
+            <motion.a
+              whileHover={{ y: -2, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              href="#demo"
+              className="rounded-full bg-blue-600 px-6 py-3 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
               Book a Demo
-            </a>
-            <a href="#how" className="rounded-full border border-blue-200 bg-white px-6 py-3 text-blue-700 hover:bg-blue-50">
+            </motion.a>
+            <motion.a
+              whileHover={{ y: -2, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              href="#how"
+              className="rounded-full border border-blue-200 bg-white px-6 py-3 text-blue-700 hover:bg-blue-50"
+            >
               How It Works
-            </a>
-          </div>
-          <div className="mt-10 grid grid-cols-3 items-center justify-center gap-6 sm:mt-12">
+            </motion.a>
+          </motion.div>
+          <motion.div variants={fadeUp} className="mt-10 grid grid-cols-3 items-center justify-center gap-6 sm:mt-12">
             <Stat number="50k+" label="Daily rides monitored" />
             <Stat number="99.9%" label="Uptime & reliability" />
             <Stat number="200+" label="Schools & operators" />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
@@ -96,45 +125,47 @@ function Audience() {
 
   return (
     <section id="audience" className="mx-auto max-w-7xl px-6 py-16">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Built for schools and parents together</h2>
-        <p className="mt-3 text-gray-600">Everyone sees what matters to them—without learning curves.</p>
-      </div>
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={stagger}
+        className="mx-auto max-w-3xl text-center"
+      >
+        <motion.h2 variants={fadeUp} className="text-3xl font-bold text-gray-900 sm:text-4xl">Built for schools and parents together</motion.h2>
+        <motion.p variants={fadeUp} className="mt-3 text-gray-600">Everyone sees what matters to them—without learning curves.</motion.p>
+      </motion.div>
       <div className="mt-10 grid gap-6 md:grid-cols-2">
-        <div className={`${cardClass} p-6`}> 
-          <div className="flex items-center gap-3">
-            <Users className="h-6 w-6 text-blue-600" />
-            <h3 className="text-xl font-semibold text-gray-900">For Schools</h3>
-          </div>
-          <ul className="mt-4 space-y-3">
-            {pointsSchools.map((p, i) => (
-              <li key={i} className="flex items-start gap-3 text-gray-700">
-                <p.icon className={featureIconClass} />
-                <span>{p.text}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-6">
-            <a href="#pricing" className="text-blue-700 hover:underline">See school plans →</a>
-          </div>
-        </div>
-        <div className={`${cardClass} p-6`}> 
-          <div className="flex items-center gap-3">
-            <Smartphone className="h-6 w-6 text-blue-600" />
-            <h3 className="text-xl font-semibold text-gray-900">For Parents</h3>
-          </div>
-          <ul className="mt-4 space-y-3">
-            {pointsParents.map((p, i) => (
-              <li key={i} className="flex items-start gap-3 text-gray-700">
-                <p.icon className={featureIconClass} />
-                <span>{p.text}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-6">
-            <a href="#features-parents" className="text-blue-700 hover:underline">Explore parent features →</a>
-          </div>
-        </div>
+        {[{ title: 'For Schools', Icon: Users, points: pointsSchools }, { title: 'For Parents', Icon: Smartphone, points: pointsParents }].map((col, i) => (
+          <motion.div
+            key={i}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            className={`${cardClass} group p-6`}
+          >
+            <div className="flex items-center gap-3">
+              <col.Icon className="h-6 w-6 text-blue-600" />
+              <h3 className="text-xl font-semibold text-gray-900">{col.title}</h3>
+            </div>
+            <ul className="mt-4 space-y-3">
+              {col.points.map((p, j) => (
+                <li key={j} className="flex items-start gap-3 text-gray-700">
+                  <p.icon className={featureIconClass} />
+                  <span>{p.text}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6">
+              {i === 0 ? (
+                <a href="#pricing" className="text-blue-700 transition-colors hover:text-blue-800 hover:underline">See school plans →</a>
+              ) : (
+                <a href="#features-parents" className="text-blue-700 transition-colors hover:text-blue-800 hover:underline">Explore parent features →</a>
+              )}
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   )
@@ -143,9 +174,9 @@ function Audience() {
 function HowItWorks() {
   const steps = [
     {
-      icon: Bus,
-      title: 'Start the trip',
-      desc: 'Drivers or schools start a trip with one tap. Routes are assigned automatically.'
+      icon: RouteIcon,
+      title: 'Set up routes',
+      desc: 'Upload stops and addresses, assign vehicles and drivers in minutes.'
     },
     {
       icon: Navigation,
@@ -161,19 +192,33 @@ function HowItWorks() {
   return (
     <section id="how" className="bg-gradient-to-b from-white to-blue-50/40">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How it works</h2>
-          <p className="mt-3 text-gray-600">Three simple steps from morning to drop-off.</p>
-        </div>
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={stagger}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold text-gray-900 sm:text-4xl">How it works</motion.h2>
+          <motion.p variants={fadeUp} className="mt-3 text-gray-600">Three simple steps from morning to drop-off.</motion.p>
+        </motion.div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {steps.map((s, i) => (
-            <div key={i} className={`${cardClass} p-6`}> 
+            <motion.div
+              key={i}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={fadeUp}
+              whileHover={{ y: -4 }}
+              className={`${cardClass} p-6`}
+            >
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
                 <s.icon className="h-6 w-6" />
               </div>
               <h3 className="mt-4 text-lg font-semibold text-gray-900">{s.title}</h3>
               <p className="mt-2 text-gray-600">{s.desc}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -183,30 +228,43 @@ function HowItWorks() {
 
 function FeatureCard({ icon: Icon, title, desc }) {
   return (
-    <div className={`${cardClass} p-5`}> 
+    <motion.div
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeUp}
+      whileHover={{ y: -4, scale: 1.01 }}
+      className={`${cardClass} p-5`}
+    >
       <div className="flex items-center gap-3">
         <Icon className={featureIconClass} />
         <h4 className="font-semibold text-gray-900">{title}</h4>
       </div>
       <p className="mt-2 text-sm text-gray-600">{desc}</p>
-    </div>
+    </motion.div>
   )
 }
 
 function ParentFeatures() {
   const features = [
-    { icon: MapPin, title: 'Live location', desc: 'Watch the ride live with accurate ETAs.' },
+    { icon: MapPin, title: 'Live tracking', desc: 'Watch the ride live with accurate ETAs.' },
     { icon: Bell, title: 'Pickup/Drop alerts', desc: 'Instant notifications when the van is near and on arrival.' },
-    { icon: UserCheck, title: 'Attendance marking', desc: 'Confirm pickup and drop in one tap.' },
-    { icon: ShieldCheck, title: 'Driver profile', desc: 'See driver photo, vehicle number and contact if needed.' },
-    { icon: AlertCircle, title: 'Safety SOS', desc: 'One button to alert school admins in emergencies.' }
+    { icon: UserCheck, title: 'Attendance', desc: 'Confirm pickup and drop in one tap.' },
+    { icon: MessageSquare, title: 'Notifications', desc: 'All trip updates in one place—no missed messages.' },
+    { icon: AlertCircle, title: 'Child safety', desc: 'SOS and admin alerts for quick help when needed.' }
   ]
   return (
     <section id="features-parents" className="mx-auto max-w-7xl px-6 py-16">
-      <div className="mx-auto mb-8 max-w-3xl text-center">
-        <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Features for parents</h2>
-        <p className="mt-3 text-gray-600">Everything you need to feel calm and in control.</p>
-      </div>
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={stagger}
+        className="mx-auto mb-8 max-w-3xl text-center"
+      >
+        <motion.h2 variants={fadeUp} className="text-3xl font-bold text-gray-900 sm:text-4xl">Features for parents</motion.h2>
+        <motion.p variants={fadeUp} className="mt-3 text-gray-600">Everything you need to feel calm and in control.</motion.p>
+      </motion.div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((f, i) => (
           <FeatureCard key={i} {...f} />
@@ -218,20 +276,26 @@ function ParentFeatures() {
 
 function SchoolFeatures() {
   const features = [
-    { icon: Activity, title: 'Fleet map', desc: 'Live view of all vans with ETAs and status.' },
-    { icon: RouteIcon, title: 'Smart route management', desc: 'Assign, reorder and optimize routes quickly.' },
+    { icon: Activity, title: 'Fleet overview map', desc: 'Live view of all vehicles with ETAs and status.' },
+    { icon: RouteIcon, title: 'Smart route management', desc: 'Upload addresses, assign routes and optimize quickly.' },
     { icon: Clock, title: 'Trip history', desc: 'Full trail of stops, timings and delays.' },
-    { icon: BarChart3, title: 'Reports', desc: 'Distance, delays and speed trends at a glance.' },
+    { icon: BarChart3, title: 'Reports', desc: 'Distance and speed trends at a glance.' },
     { icon: Bell, title: 'Notifications log', desc: 'See every alert sent to parents and drivers.' },
-    { icon: Settings, title: 'Driver & vehicle management', desc: 'Add drivers, vans and documents in minutes.' }
+    { icon: Settings, title: 'Vehicle & user management', desc: 'Add drivers, vans and documents in minutes.' }
   ]
   return (
     <section id="features-schools" className="bg-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="mx-auto mb-8 max-w-3xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Features for schools</h2>
-          <p className="mt-3 text-gray-600">Operational clarity without spreadsheets or calls.</p>
-        </div>
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={stagger}
+          className="mx-auto mb-8 max-w-3xl text-center"
+        >
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold text-gray-900 sm:text-4xl">Features for schools</motion.h2>
+          <motion.p variants={fadeUp} className="mt-3 text-gray-600">Operational clarity without spreadsheets or calls.</motion.p>
+        </motion.div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <FeatureCard key={i} {...f} />
@@ -246,33 +310,32 @@ function WhyKiddyGo() {
   const points = [
     { icon: Radio, text: 'Works with any school van or cab — no hardware needed' },
     { icon: Smartphone, text: "Built for India’s unorganized transport networks" },
-    { icon: Users, text: 'Simple for drivers — one-tap start/stop, auto alerts' },
-    { icon: MessageSquare, text: 'Reduces parent calls and complaints; builds trust' },
+    { icon: Users, text: 'Simple enough for everyone — one‑tap trips, auto alerts' },
+    { icon: MessageSquare, text: 'Reduces parent calls and complaints; increases trust' },
     { icon: ShieldCheck, text: 'Safety-first design with clear accountability' }
   ]
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
       <div className="grid items-center gap-10 lg:grid-cols-2">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Why KiddyGo</h2>
-          <p className="mt-3 text-gray-600">Practical, reliable and ready for real-world school transport.</p>
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold text-gray-900 sm:text-4xl">Why KiddyGo</motion.h2>
+          <motion.p variants={fadeUp} className="mt-3 text-gray-600">Practical, reliable and ready for real-world school transport.</motion.p>
           <ul className="mt-6 space-y-3">
             {points.map((p, i) => (
-              <li key={i} className="flex items-start gap-3 text-gray-700">
+              <motion.li key={i} variants={fadeUp} className="flex items-start gap-3 text-gray-700">
                 <p.icon className={featureIconClass} />
                 <span>{p.text}</span>
-              </li>
+              </motion.li>
             ))}
           </ul>
-        </div>
-        <div className="relative">
+        </motion.div>
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="relative">
           <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-blue-100 to-blue-50 blur-2xl" />
           <div className={`${cardClass} relative grid gap-4 p-4 sm:grid-cols-2`}>
             <DeviceMock title="Parent App" subtitle="Live ride view" tone="blue" />
-            <DeviceMock title="Driver App" subtitle="One-tap trips" tone="slate" />
             <DashMock title="School Dashboard" subtitle="Fleet overview" />
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
@@ -281,8 +344,8 @@ function WhyKiddyGo() {
 function DeviceMock({ title, subtitle, tone = 'blue' }) {
   const toneClass = tone === 'blue' ? 'from-blue-500 to-blue-600' : 'from-slate-500 to-slate-600'
   return (
-    <div className="flex flex-col items-center gap-3 p-3">
-      <div className="h-64 w-32 rounded-3xl bg-gradient-to-br ${toneClass} p-1 shadow-sm ring-1 ring-black/5">
+    <motion.div whileHover={{ y: -4 }} className="flex flex-col items-center gap-3 p-3">
+      <div className={`h-64 w-32 rounded-3xl bg-gradient-to-br ${toneClass} p-1 shadow-sm ring-1 ring-black/5`}>
         <div className="h-full w-full rounded-[1.4rem] bg-white/90 p-2">
           <div className="h-full rounded-xl bg-gradient-to-br from-gray-50 to-gray-100" />
         </div>
@@ -291,13 +354,13 @@ function DeviceMock({ title, subtitle, tone = 'blue' }) {
         <div className="font-medium text-gray-900">{title}</div>
         <div className="text-sm text-gray-500">{subtitle}</div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
 function DashMock({ title, subtitle }) {
   return (
-    <div className="sm:col-span-2">
+    <motion.div whileHover={{ y: -4 }} className="sm:col-span-1">
       <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
         <div className="mb-3 flex items-center justify-between">
           <div className="h-3 w-24 rounded bg-gray-200" />
@@ -317,7 +380,7 @@ function DashMock({ title, subtitle }) {
         <div className="font-medium text-gray-900">{title}</div>
         <div className="text-sm text-gray-500">{subtitle}</div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -325,13 +388,18 @@ function Showcase() {
   return (
     <section className="bg-gradient-to-b from-blue-50/40 to-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">See KiddyGo in action</h2>
-          <p className="mt-3 text-gray-600">Parent app, driver app and school dashboard working together.</p>
-        </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={stagger}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold text-gray-900 sm:text-4xl">See KiddyGo in action</motion.h2>
+          <motion.p variants={fadeUp} className="mt-3 text-gray-600">Parent app and school dashboard working together.</motion.p>
+        </motion.div>
+        <div className="mt-10 grid gap-6 md:grid-cols-3 lg:grid-cols-2">
           <DeviceMock title="Parent App" subtitle="Track & alerts" tone="blue" />
-          <DeviceMock title="Driver App" subtitle="Start trips" tone="slate" />
           <DashMock title="School Dashboard" subtitle="Map & reports" />
         </div>
       </div>
@@ -343,7 +411,13 @@ function Testimonials() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
       <div className="grid gap-6 md:grid-cols-2">
-        <div className={`${cardClass} p-6`}> 
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className={`${cardClass} p-6`}
+        >
           <div className="flex items-center gap-3">
             <Star className="h-5 w-5 text-blue-600" />
             <h3 className="font-semibold text-gray-900">From a parent</h3>
@@ -352,8 +426,14 @@ function Testimonials() {
             “Mornings used to be frantic. Now I just check the app, walk down at the right time and get instant updates. KiddyGo made school runs peaceful.”
           </p>
           <div className="mt-3 text-sm text-gray-500">— Priya, Mumbai</div>
-        </div>
-        <div className={`${cardClass} p-6`}> 
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          className={`${cardClass} p-6`}
+        >
           <div className="flex items-center gap-3">
             <Star className="h-5 w-5 text-blue-600" />
             <h3 className="font-semibold text-gray-900">From a school admin</h3>
@@ -362,7 +442,7 @@ function Testimonials() {
             “Our transport phone barely rings now. Live tracking and automatic alerts reduced parent complaints and gave our team full visibility.”
           </p>
           <div className="mt-3 text-sm text-gray-500">— Transport Head, Delhi</div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
@@ -372,10 +452,16 @@ function Pricing() {
   return (
     <section id="pricing" className="bg-gradient-to-b from-white to-blue-50/40">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Simple pricing for schools</h2>
-          <p className="mt-3 text-gray-600">Parent app is included with school transport — no extra charge.</p>
-        </div>
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={stagger}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold text-gray-900 sm:text-4xl">Simple pricing for schools</motion.h2>
+          <motion.p variants={fadeUp} className="mt-3 text-gray-600">Parent app is included with school transport — no extra charge.</motion.p>
+        </motion.div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           <PriceCard tier="Starter" price="₹9,999/mo" points={[
             'Up to 10 vehicles',
@@ -402,7 +488,14 @@ function Pricing() {
 
 function PriceCard({ tier, price, points, featured }) {
   return (
-    <div className={`${cardClass} p-6 ${featured ? 'border-blue-200 ring-2 ring-blue-200' : ''}`}> 
+    <motion.div
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeUp}
+      whileHover={{ y: -6, scale: 1.01 }}
+      className={`${cardClass} p-6 ${featured ? 'border-blue-200 ring-2 ring-blue-200' : ''}`}
+    >
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold text-gray-900">{tier}</h3>
         {featured && <span className="rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700">Most popular</span>}
@@ -416,8 +509,15 @@ function PriceCard({ tier, price, points, featured }) {
           </li>
         ))}
       </ul>
-      <a href="#demo" className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-blue-600 px-4 py-2.5 text-white hover:bg-blue-700">Choose plan</a>
-    </div>
+      <motion.a
+        whileHover={{ y: -2, scale: 1.01 }}
+        whileTap={{ scale: 0.98 }}
+        href="#demo"
+        className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-blue-600 px-4 py-2.5 text-white hover:bg-blue-700"
+      >
+        Choose plan
+      </motion.a>
+    </motion.div>
   )
 }
 
@@ -446,15 +546,30 @@ function FAQ() {
   ]
   return (
     <section className="mx-auto max-w-4xl px-6 py-16">
-      <h2 className="text-center text-3xl font-bold text-gray-900 sm:text-4xl">FAQs</h2>
+      <motion.h2
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        className="text-center text-3xl font-bold text-gray-900 sm:text-4xl"
+      >
+        FAQs
+      </motion.h2>
       <div className="mt-8 divide-y divide-gray-100 rounded-2xl bg-white p-2 shadow-sm ring-1 ring-gray-100">
         {faqs.map((f, i) => (
-          <details key={i} className="group p-4">
+          <details key={i} className="group p-4 transition-all">
             <summary className="flex cursor-pointer list-none items-center justify-between">
               <span className="font-medium text-gray-900">{f.q}</span>
-              <span className="ml-4 rounded-full border border-gray-200 p-1 text-gray-400 group-open:rotate-45 transition-transform">+</span>
+              <span className="ml-4 rounded-full border border-gray-200 p-1 text-gray-400 transition-transform group-open:rotate-45">+</span>
             </summary>
-            <p className="mt-3 text-gray-600">{f.a}</p>
+            <motion.p
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+              className="mt-3 text-gray-600"
+            >
+              {f.a}
+            </motion.p>
           </details>
         ))}
       </div>
@@ -466,14 +581,20 @@ function FinalCTA() {
   return (
     <section id="demo" className="relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(50rem_30rem_at_50%_-20%,#dbeafe_0,transparent_50%)]" />
-      <div className="relative mx-auto max-w-5xl px-6 py-16 text-center">
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        className="relative mx-auto max-w-5xl px-6 py-16 text-center"
+      >
         <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Ready to make school rides safer?</h2>
         <p className="mx-auto mt-3 max-w-2xl text-gray-600">Let’s show you how KiddyGo fits your routes, vans and schedule in just a short demo.</p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href="#" className="rounded-full bg-blue-600 px-6 py-3 text-white shadow-sm hover:bg-blue-700">Book a Demo</a>
-          <a href="#" className="rounded-full border border-blue-200 bg-white px-6 py-3 text-blue-700 hover:bg-blue-50">Contact Team</a>
+          <motion.a whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }} href="#" className="rounded-full bg-blue-600 px-6 py-3 text-white shadow-sm hover:bg-blue-700">Book a Demo</motion.a>
+          <motion.a whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }} href="#" className="rounded-full border border-blue-200 bg-white px-6 py-3 text-blue-700 hover:bg-blue-50">Contact Team</motion.a>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }
@@ -483,9 +604,9 @@ function Header() {
     <header className="sticky top-0 z-30 w-full backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-gray-100">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
+          <motion.div whileHover={{ rotate: -6 }} className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
             <ShieldCheck className="h-5 w-5" />
-          </div>
+          </motion.div>
           <span className="text-lg font-semibold text-gray-900">KiddyGo</span>
         </div>
         <nav className="hidden gap-6 text-sm text-gray-700 sm:flex">
@@ -494,7 +615,7 @@ function Header() {
           <a href="#features-parents" className="hover:text-blue-700">Features</a>
           <a href="#pricing" className="hover:text-blue-700">Pricing</a>
         </nav>
-        <a href="#demo" className="hidden rounded-full bg-blue-600 px-4 py-2 text-sm text-white shadow-sm hover:bg-blue-700 sm:inline-flex">Book a Demo</a>
+        <motion.a whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }} href="#demo" className="hidden rounded-full bg-blue-600 px-4 py-2 text-sm text-white shadow-sm hover:bg-blue-700 sm:inline-flex">Book a Demo</motion.a>
       </div>
     </header>
   )
